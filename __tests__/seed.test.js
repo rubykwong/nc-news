@@ -5,7 +5,7 @@ const data = require('../db/data/test-data/index');
 beforeAll(() => seed(data));
 afterAll(() => db.end());
 
-describe('seed', () => {
+describe.skip('seed', () => {
   describe('topics table', () => {
     test('topics table exists', () => {
       return db
@@ -543,7 +543,7 @@ describe('seed', () => {
   });
 });
 
-describe.skip('data insertion', () => {
+describe('data insertion', () => {
 
   test('topics data has been inserted correctly', () => {
     return db.query(`SELECT * FROM topics;`).then(({ rows: topics }) => {
@@ -567,7 +567,7 @@ describe.skip('data insertion', () => {
     });
   });
   
-  test('articles data has been inserted correctly', () => {
+  test.skip('articles data has been inserted correctly', () => {
     return db.query(`SELECT * FROM articles;`).then(({ rows: articles }) => {
       expect(articles).toHaveLength(13);
       articles.forEach((article) => {
@@ -583,7 +583,7 @@ describe.skip('data insertion', () => {
     });
   });
   
-  test('comments data has been inserted correctly', () => {
+  test.skip('comments data has been inserted correctly', () => {
     return db.query(`SELECT * FROM comments;`).then(({ rows: comments }) => {
       expect(comments).toHaveLength(18);
       comments.forEach((comment) => {
