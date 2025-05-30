@@ -1,5 +1,5 @@
 const {
-  convertTimestampToDate
+  convertTimestampToDate, createLookUpObj
 } = require("../db/seeds/utils");
 
 describe("convertTimestampToDate", () => {
@@ -38,3 +38,36 @@ describe("convertTimestampToDate", () => {
   });
 });
 
+describe("createLookUpObj", () => {
+  test("returns an empty object when passed an empty array", () => {
+    expect(createLookUpObj([])).toEqual({})
+  })
+  test("returns an object with the correct key and value referenced when passed an array of one object", () => {
+    const input = [{category_id: 1, category_name: "crisps"}]
+    const actual = createLookUpObj(input, "category_name", "category_id")
+    expect(actual).toEqual({crisps: 1})
+  })
+  test("returns an object with the correct key and value referenced when passed an array with multiple objects", () => {
+    const input = [
+      {category_id: 1, category_name: "crisps"},
+      {category_id: 2, category_name: "nuts"},
+      {category_id: 3, category_name: "crackers"},
+      {category_id: 4, category_name: "sweets"},
+      {category_id: 5, category_name: "chocolates"}
+    ]
+    const actual = createLookUpObj(input, "category_name", "category_id")
+    expect(actual).toEqual({
+      crisps: 1,
+      nuts: 2,
+      crackers: 3,
+      sweets: 4,
+      chocolates: 5
+    })
+  })
+  test("does not mutate original array", () => {
+    const input = [{category_id: 1, category_name: "crisps"}]
+    const copyInput = [{category_id: 1, category_name: "crisps"}]
+    createLookUpObj(input)
+    expect(input).toEqual(copyInput)
+  })
+})
