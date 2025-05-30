@@ -21,9 +21,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     const usersInsertStr = format(`INSERT INTO users(username, name, avatar_url) VALUES %L`, formattedUsersValue)
     return db.query(usersInsertStr)
   }) .then(() => {
-    const timeStampedArticles = articleData.map(({title, topic, author, body, created_at, votes, article_img_url}) => {
-    return convertTimestampToDate(title, topic, author, body, created_at, votes, article_img_url)
-     })
+    const timeStampedArticles = articleData.map(convertTimestampToDate)
      const formattedArticlesValue = timeStampedArticles.map(({title, topic, author, body, created_at, votes, article_img_url}) => {
     return [title, topic, author, body, created_at, votes, article_img_url]
      })
@@ -31,10 +29,8 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
      return db.query(articlesInsertStr)
    })
    .then(({rows}) => {
-    const lookUpObj = createLookUpObj(rows, "article_title", "article_id")
-    const timeStampedComments = commentData.map(({article_title, body, votes, author, created_at}) => {
-      return convertTimestampToDate(article_title, body, votes, author, created_at)
-    })
+    const lookUpObj = createLookUpObj(rows, "title", "article_id")
+    const timeStampedComments = commentData.map(convertTimestampToDate)
     const formattedCommentsValues = timeStampedComments.map(({article_title, body, votes, author, created_at}) => {
       return [lookUpObj[article_title], body, votes, author, created_at]
     })
