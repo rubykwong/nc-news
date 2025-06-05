@@ -1,9 +1,12 @@
 const express = require("express")
 const app = express()
 const { getEndpoints } = require("./controllers/endpoints.controllers")
-const {getTopics} = require("./controllers/topics.controllers")
-const { getArticles } = require("./controllers/articles.controllers")
+const { getTopics } = require("./controllers/topics.controllers")
+const { getArticles, getArticleById } = require("./controllers/articles.controllers")
 const { getUsers } = require("./controllers/users.controllers")
+const { handlePSQLErrors, handleCustomErrors, handleServerErrors} = require("./middleware/errorHandlers")
+const { getCommentsByArticleId } = require("./controllers/comments.controllers")
+
 app.get("/api", getEndpoints)
 
 app.get("/api/topics", getTopics)
@@ -11,5 +14,15 @@ app.get("/api/topics", getTopics)
 app.get("/api/articles", getArticles)
 
 app.get("/api/users", getUsers)
+
+app.get("/api/articles/:article_id", getArticleById)
+
+app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
+
+app.use(handlePSQLErrors);
+
+app.use(handleCustomErrors);
+
+app.use(handleServerErrors);
 
 module.exports = app

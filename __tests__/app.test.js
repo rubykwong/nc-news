@@ -100,3 +100,74 @@ describe("GET /api/users", () => {
     })
   })
 })
+
+describe("GET api/articles/:article_id", () => {
+  test("200: responds with a specified article object", () => {
+    return request(app)
+    .get("/api/articles/3")
+    .expect(200)
+    .then(({body}) => {
+      const article = body.article
+      expect(typeof article.author).toBe("string")
+      expect(typeof article.title).toBe("string")
+      expect(article.article_id).toBe(3)
+      expect(typeof article.body).toBe("string")
+      expect(typeof article.topic).toBe("string")
+      expect(typeof article.created_at).toBe("string")
+      expect(typeof article.votes).toBe("number")
+      expect(typeof article.article_img_url).toBe("string")
+    })
+  })
+  test("404: returns an error message if request is to a non-existing endpoint", () => {
+    return request(app)
+    .get("/api/articles/200000")
+    .expect(404)
+    .then(({body}) =>{
+      expect(body.msg).toBe("not found")
+    })
+  })
+  test("400: returns an error message if an invalid request is made", () => {
+    return request(app)
+    .get("/api/articles/notAnArticle")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+})
+
+describe("GET api/articles/:article_id/comments", () => {
+  test("200: responds with an array of comments for the given article_id", () => {
+    return request(app)
+    .get("/api/articles/3/comments")
+    .expect(200)
+    .then(({body}) => {
+      const comments = body.comments
+      expect(comments.length).not.toBe(0)
+      comments.forEach((comment) => {
+        expect(typeof comment.comment_id).toBe("number")
+        expect(typeof comment.votes).toBe("number")
+        expect(typeof comment.created_at).toBe("string")
+        expect(typeof comment.author).toBe("string")
+        expect(typeof comment.body).toBe("string")
+        expect(comment.article_id).toBe(3)
+      })
+    })
+  })
+    test("404: returns an error message if request is to a non-existing endpoint", () => {
+    return request(app)
+    .get("/api/articles/200000/comments")
+    .expect(404)
+    .then(({body}) =>{
+      expect(body.msg).toBe("not found")
+    })
+  })
+  test("400: returns an error message if an invalid request is made", () => {
+    return request(app)
+    .get("/api/articles/notAnArticle/comments")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+})
