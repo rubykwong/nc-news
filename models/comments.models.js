@@ -7,4 +7,11 @@ const fetchCommentsByArticleId = (article_id) => {
     })
 }
 
-module.exports = {fetchCommentsByArticleId}
+const insertComment = (article_id, username, body) => {
+    return db.query(`INSERT INTO comments (article_id, body, author) VALUES ($1, $2, $3) RETURNING *`, [article_id, body, username])
+    .then(({rows}) => {
+        return rows[0]
+    })
+}
+
+module.exports = {fetchCommentsByArticleId, insertComment}

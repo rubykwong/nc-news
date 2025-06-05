@@ -69,5 +69,16 @@
       }
       ]
     }
+  },
+
+  "POST /api/articles/:articleId/comments": {
+    "description": "posts a comment to a specified article",
+    "queries": [],
+    "exampleResponse": {
+      "comment": {
+        "username": "icellusedkars",
+        "body": " I carry a log — yes. Is it funny to you? It is not to me."
+      }
+    }
   }
 }

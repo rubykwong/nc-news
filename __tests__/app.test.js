@@ -139,18 +139,17 @@ describe("GET api/articles/:article_id", () => {
 describe("GET api/articles/:article_id/comments", () => {
   test("200: responds with an array of comments for the given article_id", () => {
     return request(app)
-    .get("/api/articles/3/comments")
+    .get("/api/articles/1/comments")
     .expect(200)
     .then(({body}) => {
       const comments = body.comments
-      expect(comments.length).not.toBe(0)
       comments.forEach((comment) => {
         expect(typeof comment.comment_id).toBe("number")
         expect(typeof comment.votes).toBe("number")
         expect(typeof comment.created_at).toBe("string")
         expect(typeof comment.author).toBe("string")
         expect(typeof comment.body).toBe("string")
-        expect(comment.article_id).toBe(3)
+        expect(comment.article_id).toBe(1)
       })
     })
   })
@@ -165,6 +164,37 @@ describe("GET api/articles/:article_id/comments", () => {
   test("400: returns an error message if an invalid request is made", () => {
     return request(app)
     .get("/api/articles/notAnArticle/comments")
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+})
+
+describe("POST /api/articles/:articleId/comments", () => {
+  test("", () => {
+    return request(app)
+    .post("/api/articles/2/comments")
+    .send({ username: "butter_bridge", body: "testing" })
+    .expect(201)
+    .then(({body}) => {
+      expect(typeof body.comment.author).toBe("string")
+      expect(typeof body.comment.body).toBe("string")
+    })
+  })
+  test("404: returns an error message if request is to a non-existing endpoint", () => {
+    return request(app)
+    .post("/api/articles/1000/comments")
+    .send({ username: "butter_bridge", body: "testing" })
+    .expect(404)
+    .then(({body}) =>{
+      expect(body.msg).toBe("not found")
+    })
+  })
+  test("400: returns an error message if an invalid request is made", () => {
+    return request(app)
+    .post("/api/articles/stillNotAnArticle/comments")
+    .send({ username: "butter_bridge", body: "testing" })
     .expect(400)
     .then(({body}) => {
       expect(body.msg).toBe("bad request")

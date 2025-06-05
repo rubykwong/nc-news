@@ -4,8 +4,10 @@ const { getEndpoints } = require("./controllers/endpoints.controllers")
 const { getTopics } = require("./controllers/topics.controllers")
 const { getArticles, getArticleById } = require("./controllers/articles.controllers")
 const { getUsers } = require("./controllers/users.controllers")
-const { handlePSQLErrors, handleCustomErrors, handleServerErrors} = require("./middleware/errorHandlers")
-const { getCommentsByArticleId } = require("./controllers/comments.controllers")
+const { handlePSQLErrors, handleCustomErrors, handleServerErrors} = require("./errors")
+const { getCommentsByArticleId, postComment } = require("./controllers/comments.controllers")
+
+app.use(express.json())
 
 app.get("/api", getEndpoints)
 
@@ -18,6 +20,8 @@ app.get("/api/users", getUsers)
 app.get("/api/articles/:article_id", getArticleById)
 
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
+
+app.post("/api/articles/:article_id/comments", postComment)
 
 app.use(handlePSQLErrors);
 
