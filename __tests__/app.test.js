@@ -171,15 +171,17 @@ describe("GET api/articles/:article_id/comments", () => {
   })
 })
 
-describe("POST /api/articles/:articleId/comments", () => {
-  test("", () => {
+describe.only("POST /api/articles/:articleId/comments", () => {
+  test("posts a comment to the specified article", () => {
     return request(app)
     .post("/api/articles/2/comments")
     .send({ username: "butter_bridge", body: "testing" })
     .expect(201)
     .then(({body}) => {
-      expect(typeof body.comment.author).toBe("string")
-      expect(typeof body.comment.body).toBe("string")
+      console.log(body)
+      const comment = body.comment
+      expect(typeof comment.author).toBe("string")
+      expect(typeof comment.body).toBe("string")
     })
   })
   test("404: returns an error message if request is to a non-existing endpoint", () => {
@@ -195,6 +197,24 @@ describe("POST /api/articles/:articleId/comments", () => {
     return request(app)
     .post("/api/articles/stillNotAnArticle/comments")
     .send({ username: "butter_bridge", body: "testing" })
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+  test("400: returns an error mesage if required fields are missing from the request", () => {
+    return request(app)
+    .post("/api/articles/2/comments")
+    .send({ username: "", body: "testing" })
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+  test("400: returns an error message if username provided does not match an existing user", () => {
+    return request(app)
+    .post("/api/articles/2/comments")
+    .send({ username: "rubyk", body: "testing" })
     .expect(400)
     .then(({body}) => {
       expect(body.msg).toBe("bad request")
