@@ -221,14 +221,13 @@ describe("POST /api/articles/:articleId/comments", () => {
   })
 })
 
-describe.only("PATCH /api/articles/:articleId", () => {
+describe("PATCH /api/articles/:articleId", () => {
   test("200: updates the number of votes on a specified article", () => {
     return request(app)
     .patch("/api/articles/1")
     .send({inc_votes: -10})
     .expect(200)
     .then(({body}) => {
-      console.log(body)
       const article = body.article
       expect(typeof article.author).toBe("string")
       expect(typeof article.title).toBe("string")
@@ -264,6 +263,30 @@ describe.only("PATCH /api/articles/:articleId", () => {
     return request(app)
     .patch("/api/articles/1")
     .send({inc_votes: "soManyVotes"})
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+})
+
+describe("DELETE /api/comments/comment_id", () => {
+  test("204: deletes a specified comment", () => {
+    return request(app)
+    .delete("/api/comments/1")
+    .expect(204)
+  })
+  test("404: returns an error message is a valid request is made to a non-existing comment endpoint", () => {
+    return request(app)
+    .delete("/api/comments/1000")
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("not found")
+    })
+  })
+  test("400: returns an error message if request is to an invalid comment endpoint" , () => {
+    return request(app)
+    .delete("/api/comments/notActuallyAComment")
     .expect(400)
     .then(({body}) => {
       expect(body.msg).toBe("bad request")

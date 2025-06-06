@@ -1,4 +1,4 @@
-const { fetchCommentsByArticleId, insertComment } = require("../models/comments.models")
+const { fetchCommentsByArticleId, insertComment, checkCommentExists, removeComment } = require("../models/comments.models")
 const { checkArticleExists } = require("../models/articles.models")
 const { checkUserExists } = require("../models/users.models")
 
@@ -29,4 +29,18 @@ const postComment = (request, response, next) => {
         next(err)
     })
 }
-module.exports = { getCommentsByArticleId, postComment }
+
+const deleteComment = (request, response, next) => {
+    const {comment_id} = request.params
+    Promise.all([
+        checkCommentExists(comment_id),
+        removeComment(comment_id)
+    ])
+    .then(() => {
+        response.status(204).send()
+    }).catch((err) => {
+        next(err)
+    })
+}
+
+module.exports = { getCommentsByArticleId, postComment, deleteComment }
