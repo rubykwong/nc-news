@@ -171,14 +171,13 @@ describe("GET api/articles/:article_id/comments", () => {
   })
 })
 
-describe.only("POST /api/articles/:articleId/comments", () => {
+describe("POST /api/articles/:articleId/comments", () => {
   test("posts a comment to the specified article", () => {
     return request(app)
     .post("/api/articles/2/comments")
     .send({ username: "butter_bridge", body: "testing" })
     .expect(201)
     .then(({body}) => {
-      console.log(body)
       const comment = body.comment
       expect(typeof comment.author).toBe("string")
       expect(typeof comment.body).toBe("string")
@@ -215,6 +214,56 @@ describe.only("POST /api/articles/:articleId/comments", () => {
     return request(app)
     .post("/api/articles/2/comments")
     .send({ username: "rubyk", body: "testing" })
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+})
+
+describe.only("PATCH /api/articles/:articleId", () => {
+  test("200: updates the number of votes on a specified article", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({inc_votes: -10})
+    .expect(200)
+    .then(({body}) => {
+      console.log(body)
+      const article = body.article
+      expect(typeof article.author).toBe("string")
+      expect(typeof article.title).toBe("string")
+      expect(article.article_id).toBe(1)
+      expect(typeof article.body).toBe("string")
+      expect(typeof article.topic).toBe("string")
+      expect(typeof article.created_at).toBe("string")
+      expect(article.votes).toBe(90)
+      expect(typeof article.article_img_url).toBe("string")
+    })
+  })
+  test("400: returns an error message if provided an invalid article_id", () => {
+    return request(app)
+    .patch("/api/articles/articleone")
+    .send({inc_votes: 1})
+    .expect(400)
+    .then(({body}) => {
+      expect(body.msg).toBe("bad request")
+    })
+  })
+
+  test("404: returns an error message if a valid request is made to a non-existing endpoint", () => {
+    return request(app)
+    .patch("/api/articles/270")
+    .send({inc_votes: 1})
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("not found")
+    })
+  })
+
+  test("400: returns an error message if provided an invalid newVote value", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({inc_votes: "soManyVotes"})
     .expect(400)
     .then(({body}) => {
       expect(body.msg).toBe("bad request")

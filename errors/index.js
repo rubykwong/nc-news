@@ -18,7 +18,7 @@ const handleCustomErrors = ((err, request, response, next) => {
 
 const handleServerErrors = ((err, request, response, next) => {
     console.log(err)
-    response.status(500).send({msg: 'Whoops! Something broke :('})
+    response.status(500).send({msg:'Whoops! Something broke :('})
 })
 
 module.exports = { handlePSQLErrors, handleCustomErrors, handleServerErrors}

@@ -80,5 +80,23 @@
         "body": " I carry a log — yes. Is it funny to you? It is not to me."
       }
     }
+  },
+
+    "PATCH /api/articles/:article_id": {
+    "description": "updates the vote count on a specifed article",
+    "exampleResponse": {
+      "article": [
+        {
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": -10,
+          "comment_count": 6
+        }
+      ]
+    }
   }
 }
+
+
