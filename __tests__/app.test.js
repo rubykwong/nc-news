@@ -107,6 +107,7 @@ describe("GET api/articles/:article_id", () => {
     .expect(200)
     .then(({body}) => {
       const article = body.article
+      console.log(article)
       expect(typeof article.author).toBe("string")
       expect(typeof article.title).toBe("string")
       expect(article.article_id).toBe(3)
@@ -115,6 +116,7 @@ describe("GET api/articles/:article_id", () => {
       expect(typeof article.created_at).toBe("string")
       expect(typeof article.votes).toBe("number")
       expect(typeof article.article_img_url).toBe("string")
+      expect(typeof article.comment_count).toBe("number")
     })
   })
   test("404: returns an error message if request is to a non-existing endpoint", () => {
