@@ -293,3 +293,55 @@ describe("DELETE /api/comments/comment_id", () => {
     })
   })
 })
+
+describe.only("GET /api/articles/?sort_by", () => {
+      test("200: accepts a sort_by query which responds with all articles sorted by the provided column", () => {
+      return request(app)
+      .get("/api/articles?sort_by=votes")
+      .expect(200)
+      .then(({body}) => {
+        const articles = body.articles
+        const votes = articles.map((article) => article.votes)
+        const sortedVotes = [...votes].sort((a, b) => b - a)
+        expect(votes).toEqual(sortedVotes)
+      })
+      })
+      test("200: articles are sorted in ascending or descending order, as specified by the order query", () => {
+      return request(app)
+      .get("/api/articles?sort_by=votes&order=asc")
+      .expect(200)
+      .then(({body}) => {
+        const articles = body.articles
+        const votes = articles.map((article) => article.votes)
+        const sortedVotes = [...votes].sort((a, b) => a - b)
+        expect(votes).toEqual(sortedVotes)
+      })
+      })
+      test("200: articles are sorted in descending order if no order query parameter is provided", () => {
+      return request(app)
+      .get("/api/articles?sort_by=created_at")
+      .expect(200)
+      .then(({body}) => {
+        const dates = body.articles.map((article) => new Date(article.created_at))
+        const sortedDates = [...dates].sort((a, b) => b - a)
+        expect(dates).toEqual(sortedDates)
+      })
+      }) 
+      test("200: articles are sorted in descending order and by created_at if no query parameters are provided", () => {
+        return request(app)
+        .get("/api/articles")
+        .then(({body}) => {
+        const dates = body.articles.map((article) => new Date(article.created_at))
+        const sortedDates = [...dates].sort((a, b) => b - a)
+        expect(dates).toEqual(sortedDates)
+        })
+      })
+      test("400: returns an error message if an invalid query is made", () => {
+        return request(app)
+        .get("/api/articles?sort_by=onions")
+        .expect(400)
+        .then(({body}) =>{
+          expect(body.msg).toBe("bad request")
+        })
+      })
+})

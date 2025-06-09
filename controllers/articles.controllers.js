@@ -1,9 +1,13 @@
 const { fetchArticles, fetchArticleById, updateArticleVotes, checkArticleExists } = require("../models/articles.models")
 
-const getArticles = (request, response) => {
-    return fetchArticles()
+const getArticles = (request, response, next) => {
+    const {sort_by, order} = request.query
+    return fetchArticles(sort_by, order)
         .then((articles) => {
             response.status(200).send({articles})
+    }).catch((err) => {
+        console.log(err)
+        next (err)
     })
 }
 

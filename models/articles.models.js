@@ -1,7 +1,19 @@
 const db = require("../db/connection")
+const format = require("pg-format")
 
-const fetchArticles = () => {
-    return db.query(`SELECT articles.title, articles.article_id, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url, COUNT(comment_id)::INT AS comment_count FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id ORDER BY articles.created_at DESC;`).then(({rows}) => {
+const fetchArticles = (sort_by = "created_at", order = "desc") => {
+    const validSortBy = ["title", "article_id", "topic", "author", "created_at", "votes", "article_img_url", "comment_count"]
+    const validOrder = ["asc", "desc"]
+    if (!validSortBy.includes(sort_by)) {
+        return Promise.reject({status: 400, msg: "bad request"})
+    }
+    if (!validOrder.includes(order.toLowerCase())){
+                return Promise.reject({status: 400, msg: "bad request"})
+    }
+    let queryString = `SELECT articles.title, articles.article_id, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url, COUNT(comment_id)::INT AS comment_count FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id ORDER BY articles.${sort_by} ${order.toUpperCase()}`
+    
+    return db.query(queryString)
+    .then(({rows}) => {
         return rows
     })
 }
@@ -32,4 +44,5 @@ const updateArticleVotes = (inc_votes, article_id) => {
         return rows[0]
     })
 }
+
 module.exports = { fetchArticles, fetchArticleById, checkArticleExists, updateArticleVotes }
