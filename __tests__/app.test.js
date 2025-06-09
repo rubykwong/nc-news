@@ -1,12 +1,11 @@
 jest.setTimeout(15000)
 const db = require("../db/connection");
 const endpointsJson = require("../endpoints.json");
-/* Set up your test imports here */
 const data = require("../db/data/test-data/index")
 const request = require("supertest")
 const seed = require("../db/seeds/seed")
 const app = require("../app")
-/* Set up your beforeEach & afterAll functions here */
+
 beforeEach(() => {
   return seed(data)
 })
@@ -294,7 +293,7 @@ describe("DELETE /api/comments/comment_id", () => {
   })
 })
 
-describe.only("GET /api/articles/?sort_by", () => {
+describe("GET /api/articles/?sort_by&order", () => {
       test("200: accepts a sort_by query which responds with all articles sorted by the provided column", () => {
       return request(app)
       .get("/api/articles?sort_by=votes")
@@ -344,4 +343,40 @@ describe.only("GET /api/articles/?sort_by", () => {
           expect(body.msg).toBe("bad request")
         })
       })
+})
+describe("GET /api/articles/?topic", () => {
+  test("200: accepts a topic query which returns an array of all articles that match a specified topic", () => {
+    return request(app)
+    .get("/api/articles?topic=mitch")
+    .expect(200)
+    .then(({body}) => {
+      const articles = body.articles
+      expect(articles.length).not.toBe(0)
+      articles.forEach((article) => {
+        expect(article.topic).toBe("mitch")
+        expect(typeof article.author).toBe("string")
+        expect(typeof article.title).toBe("string")
+        expect(typeof article.article_id).toBe("number")
+        expect(typeof article.created_at).toBe("string")
+        expect(typeof article.votes).toBe("number")
+        expect(typeof article.article_img_url).toBe("string")
+      })
+    })
+  })
+  test("200: returns an empty array if there are no articles on a particular topic", () => {
+    return request(app)
+    .get("/api/articles?topic=paper")
+    .expect(200)
+    .then(({body}) => {
+      expect(body.articles).toEqual([])
+    })
+  })
+  test("404: returns an error message if the queried topic does not exist", () => {
+    return request(app)
+    .get("/api/articles?topic=arsenalfc")
+    .expect(404)
+    .then(({body}) => {
+      expect(body.msg).toBe("not found")
+    })
+  })
 })

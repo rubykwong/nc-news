@@ -5,4 +5,12 @@ const fetchTopics = () => {
     })
 }
 
-module.exports = {fetchTopics}
+const checkTopicExists = (topic) => {
+    return db.query(`SELECT * FROM topics WHERE slug = $1`, [topic])
+    .then(({rows}) => {
+        if (!rows.length) {
+            return Promise.reject({status: 404, msg: 'not found'});
+        }
+    });
+};
+module.exports = {fetchTopics, checkTopicExists}
