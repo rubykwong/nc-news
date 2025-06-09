@@ -11,7 +11,11 @@
   },
   "GET /api/articles": {
     "description": "serves an array of all articles",
-    "queries": ["sort_by(column)", "order(asc || desc)", "topic(articles.topic)"],
+    "queries": [
+      "sort_by(column)",
+      "order(asc || desc)",
+      "topic(articles.topic)"
+    ],
     "exampleResponse": {
       "articles": [
         {
@@ -30,11 +34,11 @@
     "queries": [],
     "exampleResponse": {
       "users": [
-    {
-        "username": "icellusedkars",
-        "name": "sam",
-        "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
-      }
+        {
+          "username": "icellusedkars",
+          "name": "sam",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        }
       ]
     }
   },
@@ -42,8 +46,7 @@
     "description": "serves a specified article",
     "queries": [],
     "exampleResponse": {
-      "article": 
-      {
+      "article": {
         "title": "Living in the shadow of a great man",
         "topic": "mitch",
         "author": "butter_bridge",
@@ -61,14 +64,14 @@
     "queries": [],
     "exampleResponse": {
       "comments": [
-      {
-        "comment_id": 1,
-        "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
-        "votes": 16,
-        "author": "butter_bridge",
-        "created_at": "2018-05-30T15:59:13.341Z",
-        "article_id": 1
-      }
+        {
+          "comment_id": 1,
+          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          "votes": 16,
+          "author": "butter_bridge",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "article_id": 1
+        }
       ]
     }
   },
@@ -84,7 +87,7 @@
     }
   },
 
-    "PATCH /api/articles/:article_id": {
+  "PATCH /api/articles/:article_id": {
     "description": "updates the vote count on a specifed article",
     "exampleResponse": {
       "article": [
@@ -105,5 +108,3 @@
     "exampleResponse": {}
   }
 }
-
-

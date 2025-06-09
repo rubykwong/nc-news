@@ -11,7 +11,8 @@
     "start": "node listen.js",
     "test-seed": "jest seed.test.js",
     "seed": "node ./db/seeds/run-seed.js",
-    "seed-prod": "NODE_ENV=production npm run seed"
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "nodemon": "^3.1.10",
+    "prettier": "^3.5.3",
     "supertest": "^7.1.1"
   },
   "dependencies": {

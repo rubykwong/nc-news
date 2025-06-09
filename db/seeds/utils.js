@@ -6,11 +6,10 @@ exports.convertTimestampToDate = ({ created_at, ...otherProperties }) => {
   return { created_at: new Date(created_at), ...otherProperties };
 };
 
-exports.createLookUpObj = ( array, key, value ) => {
-  const result = {} 
-  for (const element of array){
-    result[element[key]] = element[value]
+exports.createLookUpObj = (array, key, value) => {
+  const result = {};
+  for (const element of array) {
+    result[element[key]] = element[value];
   }
-  return result
-  };
-
+  return result;
+};
