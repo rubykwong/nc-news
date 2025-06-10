@@ -4,46 +4,59 @@
 - id (probs not at this point though)*/
 
 * {
-    padding: 1rem;
-    margin: 1 rem;
+    padding: 0;
+    margin: 0;
     box-sizing: content-box;
-    background-color: lightblue;
+    background-color: #FDFBEE;
+}
+
+* {
+    padding: 1rem
 }
 
 html {
-    font-family:Verdana, Geneva, Tahoma, sans-serif
+    font-family:"Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
 }
-h1 {
-    color: darkcyan;
-    background-color: lightblue; 
+h1, h2, h3 {
+    color: #015551;
 }
-/* can be used to apply styles to ALL sections*/
-section {
-    background-color: TBD;
-}
-/* class selector begins with a full stop - can be used to apply styles to MULTIPLE sections*/
+/* To apply styles to ALL sections:
+
+        section {
+            background-color: TBD;
+        }
+*/
+
+/* To use class selectors to apply styles to MULTIPLE sections
+
 .endpoints { 
     background-color: paleturquoise;
 }
+*/
 
-/* id selector begins with a hashtag - can be used to apply styles to ONE section */
+/* To use id selectors to apply styles to ONE section 
 
 #your-specified id section {
     background-color: TBD,
 }
-
+*/
+/* you can change the styling of a section based on behaviour - e.g. changing the colour of a button when it's hovered over
 button {
     background-color: coral;
     font-size: 2rem;
     padding: 1rem;
     margin: 1rem;
 }
-/* you can change the styling of a section based on behaviour - e.g. changing the colour of a button when it's hovered over */
+ 
 button:hover {
     background-color: cornflowerblue;
 }
+*/
 
-/*layouts beyond the box model/ inline vs block 
+/*explore layouts beyond the box model/ inline vs block:
 - flexbox - allows you to achieve 2d layouts
 - grid - allows you to achieve 3d layouts 
 */
