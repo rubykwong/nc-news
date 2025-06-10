@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>API Documentation</title>
+</head>
+<body>
+    <header>
+        <h1>NC News Server API</h1>
+        <nav>
+            <ul>
+                <li><a href = "#get-api">GET /api</a></li>
+                <li><a href = "#get-topics">GET /api/topics</a></li>
+                <li><a href = "#get-articles">GET /api/articles</a></li>
+                <li><a href = "#get-users">GET /api/users</a></li>
+                <li><a href = "#get-article-by-articleId">GET /api/articles/:articleId</a></li>
+                <li><a href = "#get-comments-by-articleId">GET /api/articles/:articleId/comments</a></li>
+                <li><a href = "#post-comment">POST /api/articles/:articleId/comments</a></li>
+                <li><a href = "#patch-article-by-articleId">PATCH /api/articles/:article_id</a></li>
+                <li><a href = "#delete-comment">DELETE /api/comments/:comment_id</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+<section class = endpoints id ="get-api">
+    <h2>GET /api</h2>
+    <p>Serves up a json representation of all the available endpoints of the api.</p>
+    </section>
+
+    <section class = endpoints id ="get-topics">
+        <h2>GET/api/topics</h2>
+        <p>Serves an array of all topics.</p>
+        <h3>Example response:</h3>
+        <pre>
+    {
+        "topics": [{ "slug": "football", "description": "Footie!" }]
+    }
+        </pre>
+    </section>
+    <section class = endpoints id = "get-articles">
+        <h2>GET /api/articles</h2>
+        <p>Serves an array of all articles.</p>
+        <h3>Query parameters</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Description</th>
+                    <th>Allowed values</th>
+                    <th>Default</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>sort_by()</code></td>
+                    <td>Sorts responses by chosen column</td>
+                    <td> <ul>
+                        <li>title</li>
+                        <li>article_id</li>
+                        <li>topic</li>
+                        <li>author</li>
+                        <li>created_at</li>
+                        <li>votes</li>
+                        <li>article_img_url</li>
+                        <li>comment_count</li>
+                    </ul></td>
+                    <td>created_at<td>
+                </tr>
+                <tr>
+                    <td><code>order()</code></td>
+                    <td>Sorts responses in ascending or descending order</td>
+                    <td><ul>
+                        <li>asc</li>
+                        <li>desc</li>
+                    </ul></td>
+                    <td>desc</td>
+                </tr>
+                <tr>
+                    <td><code>topic()</code></td>
+                    <td>Filters responses by a specified topic</td>
+                    <td>Any topic in the database (e.g. coding, cooking, football) </td>
+                    <td>None</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Example response:</h3>
+        <pre>
+    {
+      "articles": [
+        {
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": 0,
+          "comment_count": 6
+        }
+      ]
+    }
+        </pre>
+    </section>
+    <section class = endpoints id = "get-users">
+        <h2>GET /api/users</h2>
+        <p>Serves an array of all users.</p>
+        <h3>Example response</h3>
+        <pre>
+    {
+      "users": [
+        {
+          "username": "icellusedkars",
+          "name": "sam",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+        }
+      ]
+    }    
+        </pre>
+    </section>
+
+    <section class = endpoints id = "get-article-by-articleId">
+        <h2>GET /api/articles/:articleId</h2>
+        <p>Serves a specified article.</p>
+        <h3>Path parameter</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Path variable</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <td><code>article_id</code></td>
+                    <td>the unique ID of the article to retrieve</td>
+                    <td>Integer</td>
+                    <td>7</td>
+                </tbody>
+            </thead>
+        </table>
+        <h3>Example response</h3>
+        <pre>
+    {
+      "article": {
+        "title": "Living in the shadow of a great man",
+        "topic": "mitch",
+        "author": "butter_bridge",
+        "body": "I find this existence challenging",
+        "created_at": "2018-05-30T15:59:13.341Z",
+        "comment_count": 5,
+        "votes": 100,
+        "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+        "article_id": 1
+      }
+    }        
+        </pre>
+    </section>
+    
+    <section class = endpoints id = "get-comments-by-articleId">
+        <h2>GET /api/articles/:articleId/comments</h2>
+        <p>Serves an array of comments on a specified article.</p>
+        <h3>Path parameter</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Path variable</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <td><code>article_id</code></td>
+                    <td>the unique ID of the article to retrieve comments on</td>
+                    <td>Integer</td>
+                    <td>15</td>
+                </tbody>
+            </thead>
+        </table>
+        <h3>Example response</h3>
+        <pre>
+    {
+      "comments": [
+        {
+          "comment_id": 1,
+          "body": "Oh, I've got compassion running out of my nose, pal! I'm the Sultan of Sentiment!",
+          "votes": 16,
+          "author": "butter_bridge",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "article_id": 1
+        }
+      ]
+    }       
+        </pre>
+    </section>
+
+    <section class = endpoints id = "post-comment">
+        <h2>POST /api/articles/:articleId/comments</h2>
+        <p>Posts a comment to a specified article.</p>
+        <h3>Path parameter</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Path variable</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <td><code>article_id</code></td>
+                    <td>the unique ID of the article post a comment to</td>
+                    <td>Integer</td>
+                    <td>24</td>
+                </tbody>
+            </thead>
+        </table>
+         <h3>Request body</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Required fields</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <tr>
+                    <td><code>username</code></td>
+                    <td>the commenter's username. Must match an existing username in the database</td>
+                    <td>String</td>
+                    <td>"icellusedkars"</td>
+                </tr>
+                <tr>
+                    <td><code>body</code></td>
+                    <td>the body of the comment</td>
+                    <td>String</td>
+                    <td>" I carry a log — yes. Is it funny to you? It is not to me."</td>
+                </tr>
+                </tbody>
+            </thead>
+        </table>
+        <h3>Example response</h3>
+        <pre>
+    {
+      "comment": {
+        "username": "icellusedkars",
+        "body": " I carry a log — yes. Is it funny to you? It is not to me."
+      }
+    }
+        </pre>
+    </section>
+
+    <section class = endpoints id = "patch-article-by-articleId">
+        <h2>PATCH /api/articles/:article_id</h2>
+        <p>Updates the vote count on a specifed article.</p>
+        <h3>Path parameter</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Path variable</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <td><code>article_id</code></td>
+                    <td>the unique ID of an article which requires an updated vote count</td>
+                    <td>Integer</td>
+                    <td>10</td>
+                </tbody>
+            </thead>
+        </table>
+        <h3>Request body</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Required fields</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <td><code>{inc_votes: newVote}</code></td>
+                    <td>newVote indidates how much the votes property in the database should be updated by</td>
+                    <td>Integer</td>
+                    <td><code>{inc_votes: -20}</code> would decrement the current article's vote property by 20</td>
+                </tbody>
+            </thead>
+        </table>
+        <h3>Example response</h3>
+        <pre>
+    {
+      "article": [
+        {
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": -10,
+          "comment_count": 6
+        }
+      ]
+    }
+        </pre>
+    </section>
+
+    <section class = endpoints id = "delete-comment">
+        <h2>DELETE /api/comments/:comment_id</h2>
+        <p>Deletes a specified comment.</p>
+        <h3>Path parameter</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Path variable</th>
+                    <th>Description</th>
+                    <th>Data type</th>
+                    <th>Example</th>
+                </tr>
+                <tbody>
+                    <td><code>comment_id</code></td>
+                    <td>the unique ID of the comment to delete</td>
+                    <td>Integer</td>
+                    <td>75</td>
+                </tbody>
+            </thead>
+        </table>
+        <h3>Example response</h3>
+        <pre> {}</pre>
+    </section>
+
+    </main>
+</body>
+</html>

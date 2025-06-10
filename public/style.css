@@ -1,0 +1,49 @@
+/* Things to consider for today's sprint:
+- tags (h1, p, html, ol, ul, li)
+- classes (font, change colour of text, add a background)
+- id (probs not at this point though)*/
+
+* {
+    padding: 1rem;
+    margin: 1 rem;
+    box-sizing: content-box;
+    background-color: lightblue;
+}
+
+html {
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+}
+h1 {
+    color: darkcyan;
+    background-color: lightblue; 
+}
+/* can be used to apply styles to ALL sections*/
+section {
+    background-color: TBD;
+}
+/* class selector begins with a full stop - can be used to apply styles to MULTIPLE sections*/
+.endpoints { 
+    background-color: paleturquoise;
+}
+
+/* id selector begins with a hashtag - can be used to apply styles to ONE section */
+
+#your-specified id section {
+    background-color: TBD,
+}
+
+button {
+    background-color: coral;
+    font-size: 2rem;
+    padding: 1rem;
+    margin: 1rem;
+}
+/* you can change the styling of a section based on behaviour - e.g. changing the colour of a button when it's hovered over */
+button:hover {
+    background-color: cornflowerblue;
+}
+
+/*layouts beyond the box model/ inline vs block 
+- flexbox - allows you to achieve 2d layouts
+- grid - allows you to achieve 3d layouts 
+*/
