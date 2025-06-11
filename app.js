@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
+const path = require("path")
 const { getEndpoints } = require("./controllers/endpoints.controllers");
 const { getTopics } = require("./controllers/topics.controllers");
 const {
   getArticles,
   getArticleById,
   patchArticleVotes,
-  sortArticlesByColumn,
 } = require("./controllers/articles.controllers");
 const { getUsers } = require("./controllers/users.controllers");
 const {
@@ -21,9 +21,12 @@ const {
 } = require("./controllers/comments.controllers");
 
 app.use(express.json());
+app.use(express.static("public"))
+app.get("/api", (request, response) => {
+  response.sendFile(path.join(__dirname, "public/index.html"))
+})
 
-app.get("/api", getEndpoints);
-
+app.get("/api/endpoints", getEndpoints)
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles", getArticles);
