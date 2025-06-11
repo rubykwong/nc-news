@@ -38,6 +38,16 @@ const getArticleById = (request, response, next) => {
 const patchArticleVotes = (request, response, next) => {
   const { article_id } = request.params;
   const { inc_votes } = request.body;
+  if (inc_votes === undefined){
+    return checkArticleExists(article_id)
+    .then(() => fetchArticleById(article_id))
+    .then((article) => {
+    response.status(200).send({article})
+  })
+  .catch((err) => {
+    next(err)
+  })
+  }
   Promise.all([
     checkArticleExists(article_id),
     updateArticleVotes(inc_votes, article_id),

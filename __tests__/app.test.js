@@ -212,7 +212,7 @@ describe("POST /api/articles/:articleId/comments", () => {
   });
 });
 
-describe("PATCH /api/articles/:articleId", () => {
+describe.only("PATCH /api/articles/:articleId", () => {
   test("200: updates the number of votes on a specified article", () => {
     return request(app)
       .patch("/api/articles/1")
@@ -230,6 +230,15 @@ describe("PATCH /api/articles/:articleId", () => {
         expect(typeof article.article_img_url).toBe("string");
       });
   });
+  test("200: ignores patch request with no body and returns the article unchanged", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({})
+    .expect(200)
+    .then(({body}) => {
+      expect(body.article.votes).toBe(100)
+    })
+  })
   test("400: returns an error message if provided an invalid article_id", () => {
     return request(app)
       .patch("/api/articles/articleone")
