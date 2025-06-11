@@ -201,18 +201,18 @@ describe("POST /api/articles/:articleId/comments", () => {
         expect(body.msg).toBe("bad request");
       });
   });
-  test("400: returns an error message if username provided does not match an existing user", () => {
+  test("404: returns an error message if username provided does not match an existing user", () => {
     return request(app)
       .post("/api/articles/2/comments")
       .send({ username: "rubyk", body: "testing" })
-      .expect(400)
+      .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("bad request");
       });
   });
 });
 
-describe.only("PATCH /api/articles/:articleId", () => {
+describe("PATCH /api/articles/:articleId", () => {
   test("200: updates the number of votes on a specified article", () => {
     return request(app)
       .patch("/api/articles/1")

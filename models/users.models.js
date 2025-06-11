@@ -13,7 +13,7 @@ const checkUserExists = (username) => {
     .query(`SELECT * FROM users WHERE username = $1`, [username])
     .then(({ rows }) => {
       if (!rows.length) {
-        return Promise.reject({ status: 400, msg: "bad request" });
+        return Promise.reject({ status: 404, msg: "bad request" });
       }
     });
 };
