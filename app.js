@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-const path = require("path")
+const path = require("path");
+const cors = require("cors");
 const { getEndpoints } = require("./controllers/endpoints.controllers");
 const { getTopics } = require("./controllers/topics.controllers");
 const {
@@ -20,6 +21,7 @@ const {
   deleteComment,
 } = require("./controllers/comments.controllers");
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static("public"))
 app.get("/api", (request, response) => {
